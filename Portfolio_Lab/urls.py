@@ -16,6 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+from OddamWDobreRece import views
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.LandingPage.as_view()),
+    path('add-donation/', views.AddDonation.as_view()),
+    path('login/', views.Login.as_view()),
+    path('register/', views.Register.as_view()),
 ]
