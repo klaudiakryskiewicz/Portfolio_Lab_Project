@@ -10,7 +10,8 @@
 
     <section class="login-page">
       <h2>Załóż konto</h2>
-      <form>
+      <form method="post" action="{% url 'login' %}">
+          {% csrf_token %}
         <div class="form-group">
           <input type="text" name="name" placeholder="Imię" />
         </div>
