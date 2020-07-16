@@ -10,22 +10,23 @@
 
     <section class="login-page">
       <h2>Załóż konto</h2>
-      <form method="post" action="{% url 'login' %}">
+      <form method="post" action="">
           {% csrf_token %}
+
         <div class="form-group">
-          <input type="text" name="name" placeholder="Imię" />
+          <input type="text" name="{{ form.first_name.name }}" placeholder="Imię" />
         </div>
          <div class="form-group">
-          <input type="text" name="surname" placeholder="Nazwisko" />
+          <input type="text" name="{{ form.last_name.name }}" placeholder="Nazwisko" />
         </div>
         <div class="form-group">
-          <input type="email" name="email" placeholder="Email" />
+          <input type="email" name="{{ form.email.name }}" placeholder="Email" />
         </div>
         <div class="form-group">
-          <input type="password" name="password" placeholder="Hasło" />
+          <input type="password" name="{{ form.password1.name }}" placeholder="Hasło" />
         </div>
         <div class="form-group">
-          <input type="password" name="password2" placeholder="Powtórz hasło" />
+          <input type="password" name="{{ form.password2.name }}" placeholder="Powtórz hasło" />
         </div>
 
         <div class="form-group form-group--buttons">

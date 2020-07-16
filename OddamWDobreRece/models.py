@@ -1,6 +1,7 @@
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator
 from django.db import models
+from django.db.models import Sum
 from django.utils.translation import gettext_lazy as _
 
 
@@ -23,26 +24,18 @@ class Institution(models.Model):
     categories = models.ManyToManyField(Category)
 
     def no_of_helped(self):
-        return Institution.objects.count() - Institution.objects.filter(donation__isnull=True).count()
-        # czy da się lepiej?
+        return Institution.objects.filter(donation__isnull=False).distinct().count()
 
 
 class Donation(models.Model):
     quantity = models.PositiveIntegerField()
     categories = models.ManyToManyField(Category)
     institution = models.ForeignKey(Institution, on_delete=models.CASCADE)
-    address = models.CharField(max_length=120)  # ulica + nr domu, czy to powinien być inny typ?
-    phone_number = models.PositiveIntegerField(validators=[MaxValueValidator(999999999)])  # czy da się lepiej?
+    address = models.CharField(max_length=120)
+    phone_number = models.CharField(max_length=12)
     city = models.CharField(max_length=60)
-    zip_code = models.IntegerField(validators=[MaxValueValidator(99999)])  # czy da się lepiej?
+    zip_code = models.CharField(max_length=8)
     pick_up_date = models.DateField()
     pick_up_time = models.TimeField()
     pick_up_comment = models.TextField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, default=None)
-
-    def no_of_bags(self):
-        sum = 0
-        for donation in Donation.objects.all():
-            sum += donation.quantity
-        return sum
-    # czy da się lepiej?

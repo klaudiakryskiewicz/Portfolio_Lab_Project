@@ -1,4 +1,6 @@
+from django.db.models import Sum
 from django.shortcuts import render
+from django.urls import reverse_lazy
 
 from django.views import View
 from django.views.generic import CreateView
@@ -10,7 +12,7 @@ from OddamWDobreRece.models import Donation, Institution
 class LandingPage(View):
 
     def get(self, request):
-        no_of_bags = Donation.no_of_bags(request)
+        no_of_bags = Donation.objects.aggregate(Sum('quantity'))['quantity__sum']
         no_of_institutions = Institution.no_of_helped(request)
         foundations = Institution.objects.filter(type=1)
         non_gov = Institution.objects.filter(type=2)
@@ -36,4 +38,6 @@ class Register(CreateView):
     form_class = RegisterForm
     template_name = 'register.html'
 
+    def get_success_url(self):
+        return reverse_lazy("login")
 
