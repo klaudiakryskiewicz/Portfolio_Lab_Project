@@ -1,8 +1,10 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.db.models import Sum
+from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 
 from django.views import View
 from django.views.generic import CreateView, FormView
@@ -38,12 +40,11 @@ class AddDonation(LoginRequiredMixin, View):
         return render(request, 'form.html', context)
 
 
-# class Login(FormView):
-#     form_class = AuthenticationForm
-#     template_name = 'registration/login.html'
-#
-#     def get_success_url(self):
-#         return reverse_lazy("main")
+class Login(LoginView):
+
+    def form_invalid(self, form):
+        return HttpResponseRedirect(reverse('registration'))
+    #django messages
 
 
 class Register(CreateView):

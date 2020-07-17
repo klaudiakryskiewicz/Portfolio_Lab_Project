@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.LandingPage.as_view(), name='main'),
     path('add-donation/', views.AddDonation.as_view(), name='donation'),
-    # path('login/', views.Login.as_view(), name='login'),
+    path('login/', views.Login.as_view(), name='login'),
     path('register/', views.Register.as_view(), name='registration'),
     path('', include('django.contrib.auth.urls')),
 ]

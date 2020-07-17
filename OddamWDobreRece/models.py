@@ -8,6 +8,9 @@ from django.utils.translation import gettext_lazy as _
 class Category(models.Model):
     name = models.CharField(max_length=120)
 
+    def __str__(self):
+        return f"{self.name}"
+
 
 class Institution(models.Model):
     class Types(models.TextChoices):
@@ -25,6 +28,9 @@ class Institution(models.Model):
 
     def no_of_helped(self):
         return Institution.objects.filter(donation__isnull=False).distinct().count()
+
+    def __str__(self):
+        return f"{self.name}"
 
 
 class Donation(models.Model):
