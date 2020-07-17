@@ -3,7 +3,7 @@
           <li class="logged-user">
             Witaj {{ user.first_name }}
             <ul class="dropdown">
-              <li><a href="#">Profil</a></li>
+              <li><a href="{% url 'profile' %}">Profil</a></li>
               <li><a href="#">Ustawienia</a></li>
                 {% if user.is_superuser %}
                     <li><a href="/admin/">Admin panel</a></li>

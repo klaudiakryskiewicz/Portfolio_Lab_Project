@@ -53,3 +53,9 @@ class Register(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("login")
+
+
+class Profile(View):
+
+    def get(self, request):
+        return render(request, 'profile.html')

@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+    <header>
+    <nav class="container container--70">
+{% include 'login_navbar.html' %}
+    {% include 'donation_navbar.html' %}
+    </nav>
+    </header>
+    <section>
+    <div>
+   <ul>
+       <li>{{ user.first_name }}</li>
+       <li>{{ user.last_name }}</li>
+       <li>{{ user.email }}</li>
+   </ul>
+
+    </div>
+    </section>
+
+{% endblock %}
