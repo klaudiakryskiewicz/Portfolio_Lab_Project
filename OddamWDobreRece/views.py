@@ -1,12 +1,14 @@
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Sum
 from django.shortcuts import render
 from django.urls import reverse_lazy
 
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, FormView
 
 from OddamWDobreRece.forms import RegisterForm
-from OddamWDobreRece.models import Donation, Institution
+from OddamWDobreRece.models import Donation, Institution, Category
 
 
 class LandingPage(View):
@@ -22,16 +24,26 @@ class LandingPage(View):
                        'non_gov': non_gov, 'local_col': local_col})
 
 
-class AddDonation(View):
+class AddDonation(LoginRequiredMixin, View):
+    login_url = '/login/'
+    redirect_field_name = 'next'
 
     def get(self, request):
-        return render(request, 'form.html')
+        categories = Category.objects.all()
+        institutions = Institution.objects.all()
+        context = {
+            'categories': categories,
+            'institutions': institutions,
+        }
+        return render(request, 'form.html', context)
 
 
-class Login(View):
-
-    def get(self, request):
-        return render(request, 'login.html')
+# class Login(FormView):
+#     form_class = AuthenticationForm
+#     template_name = 'registration/login.html'
+#
+#     def get_success_url(self):
+#         return reverse_lazy("main")
 
 
 class Register(CreateView):
@@ -40,4 +52,3 @@ class Register(CreateView):
 
     def get_success_url(self):
         return reverse_lazy("login")
-
