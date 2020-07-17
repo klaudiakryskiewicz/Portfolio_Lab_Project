@@ -58,4 +58,6 @@ class Register(CreateView):
 class Profile(View):
 
     def get(self, request):
-        return render(request, 'profile.html')
+        donations = Donation.objects.filter(user=request.user)
+        context = {'donations':donations}
+        return render(request, 'profile.html', context)

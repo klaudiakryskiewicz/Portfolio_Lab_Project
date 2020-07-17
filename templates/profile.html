@@ -18,4 +18,16 @@
     </div>
     </section>
 
+    <section>
+    <div>
+   <ul>
+       {% for donation in donations %}<li>{{ donation.quantity }}
+           {{ donation.institution }}
+           {% for category in donation.categories.all %}{{ category.name }}{% endfor %}
+       {{ donation.pick_up_date }}</li>{% endfor %}
+   </ul>
+
+    </div>
+    </section>
+
 {% endblock %}
