@@ -9,23 +9,40 @@
     </header>
     <section>
     <div>
-   <ul>
-       <li>{{ user.first_name }}</li>
-       <li>{{ user.last_name }}</li>
-       <li>{{ user.email }}</li>
-   </ul>
+   <table style="font-size: 2em;">
+       <tr><th>First name</th><th>{{ user.first_name }}</th></tr>
+       <tr><th>Last name</th><th>{{ user.last_name }}</th></tr>
+       <tr><th>Email</th><th>{{ user.email }}</th></tr>
+   </table>
 
     </div>
     </section>
 
     <section>
     <div>
-   <ul>
-       {% for donation in donations %}<li>{{ donation.quantity }}
-           {{ donation.institution }}
-           {% for category in donation.categories.all %}{{ category.name }}{% endfor %}
-       {{ donation.pick_up_date }}</li>{% endfor %}
-   </ul>
+    <table style="font-size: 2em;">
+        <thead>
+    <tr>
+        <th scope="col">Quantity</th>
+        <th scope="col">Institution</th>
+        <th scope="col">Categories</th>
+        <th scope="col">Pick-up date</th>
+        <th scope="col">Archive</th>
+
+    </tr>
+    </thead>
+   {% for donation in donations %}
+       <tr>
+       <th>{{ donation.quantity }}</th>
+           <th>
+               {{ donation.institution }}</th>
+           <th>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</th>
+       <th>{{ donation.pick_up_date }}</th>
+       <th><form method="post" action="{% url 'archive' %}">
+                    {% csrf_token %}<input name="donation_id" type="hidden" value="{{ donation.id }}">
+                    <input type="submit" class="btn btn-success" value="Archive"></form></th>
+   </tr> {% endfor %}
+    </table>
 
     </div>
     </section>

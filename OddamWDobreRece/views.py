@@ -4,7 +4,7 @@ from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 
 from django.views import View
@@ -72,3 +72,12 @@ class Profile(View):
         donations = Donation.objects.filter(user=request.user)
         context = {'donations': donations}
         return render(request, 'profile.html', context)
+
+class Archive(View):
+
+    def post(self, request):
+        donation_id = request.POST.get("donation_id")
+        donation = Donation.objects.get(id=donation_id)
+        donation.is_taken = True
+        donation.save()
+        return redirect(reverse('profile'))
