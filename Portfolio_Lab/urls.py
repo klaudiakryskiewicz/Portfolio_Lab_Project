@@ -26,5 +26,6 @@ urlpatterns = [
     path('register/', views.Register.as_view(), name='registration'),
     path('profile/', views.Profile.as_view(), name='profile'),
     path('archive/', views.Archive.as_view(), name='archive'),
+    path('settings/', views.Settings.as_view(), name='settings'),
     path('', include('django.contrib.auth.urls')),
 ]

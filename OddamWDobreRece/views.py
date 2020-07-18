@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.paginator import Paginator
 from django.db.models import Sum
 from django.http import HttpResponseRedirect
@@ -73,6 +73,7 @@ class Profile(View):
         context = {'donations': donations}
         return render(request, 'profile.html', context)
 
+
 class Archive(View):
 
     def post(self, request):
@@ -81,3 +82,7 @@ class Archive(View):
         donation.is_taken = True
         donation.save()
         return redirect(reverse('profile'))
+
+
+class Settings(PasswordChangeView):
+    pass
