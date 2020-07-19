@@ -235,6 +235,52 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
       // TODO: get data from inputs and show them in summary
+      //  DATA - step 1 - categories
+      let categories = document.querySelectorAll(".form-step-1");
+      const categories_table = []
+      for (let el of categories) {
+        if(el.checked === true){
+             categories_table.push(parseInt(el['value']))
+        }
+      }
+      console.log(categories_table)
+
+      //  DATA - step 2 - quantity
+      let bags = document.querySelector(".form-step-2");
+      let no_of_bags = parseInt(bags['value'])
+
+      console.log(no_of_bags)
+
+
+      //  DATA - step 3 - organisation
+      let organisations = document.querySelectorAll(".form-step-3");
+      let organisation = null
+      for (let el of organisations) {
+        if(el.checked === true){
+             organisation = parseInt(el['value'])
+        }
+      }
+      console.log(organisation)
+
+      //  DATA - step 4 - address
+      const full_info ={}
+
+      let address = document.querySelector(".form-step-4-address");
+      full_info['address'] = address['value']
+      let city = document.querySelector(".form-step-4-city");
+      full_info['city'] = city['value']
+      let postcode = document.querySelector(".form-step-4-postcode");
+      full_info['postcode'] = postcode['value']
+      let phone = document.querySelector(".form-step-4-phone");
+      full_info['phone'] = phone['value']
+      let date = document.querySelector(".form-step-4-date");
+      full_info['date'] = date['value']
+      let time = document.querySelector(".form-step-4-time");
+      full_info['time'] = time['value']
+      let more_info = document.querySelector(".form-step-4-more_info");
+      full_info['more_info'] = more_info['value']
+
+      console.log(full_info)
     }
 
     /**

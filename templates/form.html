@@ -70,6 +70,7 @@
                   type="checkbox"
                   name="categories"
                   value="{{ category.id }}"
+                  class="form-step-1"
                 />
                 <span class="checkbox"></span>
                 <span class="description"
@@ -91,7 +92,7 @@
             <div class="form-group form-group--inline">
               <label>
                 Liczba 60l worków:
-                <input type="number" name="bags" step="1" min="1" />
+                <input type="number" name="bags" step="1" min="1" class="form-step-2" />
               </label>
             </div>
 
@@ -109,7 +110,7 @@
             {% for institution in institutions %}
             <div class="form-group form-group--checkbox">
               <label>
-                <input type="radio" name="organization" value="{{institution.id}}" />
+                <input type="radio" name="organization" value="{{institution.id}}" class="form-step-3"/>
                 <span class="checkbox radio"></span>
                 <span class="description">
                   <div class="title">{{ institution.name }}</div>
@@ -136,22 +137,22 @@
               <div class="form-section--column">
                 <h4>Adres odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Ulica <input type="text" name="address" /> </label>
+                  <label> Ulica <input type="text" name="address" class="form-step-4-address"/> </label>
                 </div>
 
                 <div class="form-group form-group--inline">
-                  <label> Miasto <input type="text" name="city" /> </label>
+                  <label> Miasto <input type="text" name="city" class="form-step-4-city"/> </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
-                    Kod pocztowy <input type="text" name="postcode" />
+                    Kod pocztowy <input type="text" name="postcode" class="form-step-4-postcode"/>
                   </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
-                    Numer telefonu <input type="phone" name="phone" />
+                    Numer telefonu <input type="phone" name="phone" class="form-step-4-phone"/>
                   </label>
                 </div>
               </div>
@@ -159,17 +160,17 @@
               <div class="form-section--column">
                 <h4>Termin odbioru</h4>
                 <div class="form-group form-group--inline">
-                  <label> Data <input type="date" name="data" /> </label>
+                  <label> Data <input type="date" name="date" class="form-step-4-date"/> </label>
                 </div>
 
                 <div class="form-group form-group--inline">
-                  <label> Godzina <input type="time" name="time" /> </label>
+                  <label> Godzina <input type="time" name="time" class="form-step-4-time"/> </label>
                 </div>
 
                 <div class="form-group form-group--inline">
                   <label>
                     Uwagi dla kuriera
-                    <textarea name="more_info" rows="5"></textarea>
+                    <textarea name="more_info" rows="5" class="form-step-4-more_info"></textarea>
                   </label>
                 </div>
               </div>
@@ -236,5 +237,5 @@
     </section>
 
 
-
+    <script src="{% static 'js/app.js' %}"></script>
 {% endblock %}
