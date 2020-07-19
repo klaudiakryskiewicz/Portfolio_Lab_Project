@@ -19,15 +19,15 @@ class LandingPage(View):
     def get(self, request):
         no_of_bags = Donation.objects.aggregate(Sum('quantity'))['quantity__sum']
         no_of_institutions = Institution.no_of_helped(request)
-        foundation_list = Institution.objects.filter(type=1)
+        foundation_list = Institution.objects.filter(type=1).order_by('id')
         paginator_foundations = Paginator(foundation_list, 5)
         page = request.GET.get('page')
         foundations = paginator_foundations.get_page(page)
-        non_gov_list = Institution.objects.filter(type=2)
+        non_gov_list = Institution.objects.filter(type=2).order_by('id')
         paginator_non_gov = Paginator(non_gov_list, 5)
         page = request.GET.get('page')
         non_gov = paginator_non_gov.get_page(page)
-        local_col_list = Institution.objects.filter(type=3)
+        local_col_list = Institution.objects.filter(type=3).order_by('id')
         paginator_local_col = Paginator(local_col_list, 5)
         page = request.GET.get('page')
         local_col = paginator_local_col.get_page(page)
@@ -69,8 +69,9 @@ class Register(CreateView):
 class Profile(View):
 
     def get(self, request):
-        donations = Donation.objects.filter(user=request.user)
-        context = {'donations': donations}
+        donations = Donation.objects.filter(user=request.user).filter(is_taken=False)
+        past_donations = Donation.objects.filter(user=request.user).filter(is_taken=True)
+        context = {'donations': donations, 'past_donations': past_donations}
         return render(request, 'profile.html', context)
 
 
@@ -85,4 +86,4 @@ class Archive(View):
 
 
 class Settings(PasswordChangeView):
-    pass
+    success_url = reverse_lazy('profile')

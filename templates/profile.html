@@ -7,19 +7,20 @@
     {% include 'donation_navbar.html' %}
     </nav>
     </header>
-    <section>
-    <div>
+    <section class="stats">
+
+        <h2>Twoje dane</h2>
    <table style="font-size: 2em;">
        <tr><th>First name</th><th>{{ user.first_name }}</th></tr>
        <tr><th>Last name</th><th>{{ user.last_name }}</th></tr>
        <tr><th>Email</th><th>{{ user.email }}</th></tr>
    </table>
 
-    </div>
     </section>
 
     <section>
-    <div>
+
+    <h2>Twoje dary</h2>
     <table style="font-size: 2em;">
         <thead>
     <tr>
@@ -38,13 +39,21 @@
                {{ donation.institution }}</th>
            <th>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</th>
        <th>{{ donation.pick_up_date }}</th>
-       <th><form method="post" action="{% url 'archive' %}">
+       <th ><form method="post" action="{% url 'archive' %}">
                     {% csrf_token %}<input name="donation_id" type="hidden" value="{{ donation.id }}">
-                    <input type="submit" class="btn btn-success" value="Archive"></form></th>
+                    <input type="submit" class="btn btn-success" value="Archive" style="margin: auto; display: flex"></form></th>
+   </tr> {% endfor %}
+    {% for donation in past_donations %}
+       <tr style="color: grey; font-style: italic">
+       <th>{{ donation.quantity }}</th>
+           <th>
+               {{ donation.institution }}</th>
+           <th>{% for category in donation.categories.all %}{{ category.name }} {% endfor %}</th>
+       <th>{{ donation.pick_up_date }}</th>
+       <th>The donation was taken</th>
    </tr> {% endfor %}
     </table>
 
-    </div>
     </section>
 
 {% endblock %}
