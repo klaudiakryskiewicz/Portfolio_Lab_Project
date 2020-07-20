@@ -237,13 +237,16 @@ document.addEventListener("DOMContentLoaded", function() {
       // TODO: get data from inputs and show them in summary
       //  DATA - step 1 - categories
       let categories = document.querySelectorAll(".form-step-1");
-      const categories_table = []
+      const categories_table = [];
+      const categories_names = [];
       for (let el of categories) {
         if(el.checked === true){
-             categories_table.push(parseInt(el['value']))
+             categories_table.push(parseInt(el['value']));
+             categories_names.push(document.querySelector(".category-name").innerHTML) //do poprawy
         }
       }
       console.log(categories_table)
+      console.log(categories_names)
 
       //  DATA - step 2 - quantity
       let bags = document.querySelector(".form-step-2");
@@ -281,6 +284,20 @@ document.addEventListener("DOMContentLoaded", function() {
       full_info['more_info'] = more_info['value']
 
       console.log(full_info)
+
+      // summary
+    document.querySelector('.summary-donation').innerText = no_of_bags + categories_names;
+    document.querySelector('.summary-organisation').innerText = organisation;
+    const addresshtml = document.querySelector('.summary-address').children;
+    addresshtml[0].innerHTML = full_info['address'];
+    addresshtml[1].innerHTML = full_info['city'];
+    addresshtml[2].innerHTML = full_info['postcode'];
+    addresshtml[3].innerHTML = full_info['phone'];
+    const pickuphtml = document.querySelector('.summary-pickup').children;
+    pickuphtml[0].innerHTML = full_info['date'];
+    pickuphtml[1].innerHTML = full_info['time'];
+    pickuphtml[2].innerHTML = full_info['more_info'];
+
     }
 
     /**
