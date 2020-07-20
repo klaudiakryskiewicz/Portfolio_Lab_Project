@@ -242,52 +242,54 @@ document.addEventListener("DOMContentLoaded", function() {
       for (let el of categories) {
         if(el.checked === true){
              categories_table.push(parseInt(el['value']));
-             categories_names.push(document.querySelector(".category-name").innerHTML) //do poprawy
+             categories_names.push(el.parentElement.children[2].textContent);
         }
       }
-      console.log(categories_table)
-      console.log(categories_names)
+      console.log(categories_table);
+      console.log(categories_names);
 
       //  DATA - step 2 - quantity
       let bags = document.querySelector(".form-step-2");
-      let no_of_bags = parseInt(bags['value'])
+      let no_of_bags = parseInt(bags['value']);
 
       console.log(no_of_bags)
 
 
       //  DATA - step 3 - organisation
       let organisations = document.querySelectorAll(".form-step-3");
-      let organisation = null
+      let organisation = null;
+      let organisation_name = null;
       for (let el of organisations) {
         if(el.checked === true){
-             organisation = parseInt(el['value'])
+             organisation = parseInt(el['value']);
+             organisation_name = el.parentElement.children[2].children[1].innerHTML;
         }
       }
-      console.log(organisation)
+      console.log(organisation);
 
       //  DATA - step 4 - address
       const full_info ={}
 
       let address = document.querySelector(".form-step-4-address");
-      full_info['address'] = address['value']
+      full_info['address'] = address['value'];
       let city = document.querySelector(".form-step-4-city");
-      full_info['city'] = city['value']
+      full_info['city'] = city['value'];
       let postcode = document.querySelector(".form-step-4-postcode");
-      full_info['postcode'] = postcode['value']
+      full_info['postcode'] = postcode['value'];
       let phone = document.querySelector(".form-step-4-phone");
-      full_info['phone'] = phone['value']
+      full_info['phone'] = phone['value'];
       let date = document.querySelector(".form-step-4-date");
-      full_info['date'] = date['value']
+      full_info['date'] = date['value'];
       let time = document.querySelector(".form-step-4-time");
-      full_info['time'] = time['value']
+      full_info['time'] = time['value'];
       let more_info = document.querySelector(".form-step-4-more_info");
-      full_info['more_info'] = more_info['value']
+      full_info['more_info'] = more_info['value'];
 
-      console.log(full_info)
+      console.log(full_info);
 
       // summary
     document.querySelector('.summary-donation').innerText = no_of_bags + categories_names;
-    document.querySelector('.summary-organisation').innerText = organisation;
+    document.querySelector('.summary-organisation').innerText = organisation_name;
     const addresshtml = document.querySelector('.summary-address').children;
     addresshtml[0].innerHTML = full_info['address'];
     addresshtml[1].innerHTML = full_info['city'];
