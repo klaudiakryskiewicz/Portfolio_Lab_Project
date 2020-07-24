@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
@@ -38,17 +40,38 @@ class LandingPage(View):
 
 
 class AddDonation(LoginRequiredMixin, View):
-    login_url = '/login/'
+    login_url = reverse_lazy('login')
     redirect_field_name = 'next'
 
     def get(self, request):
         categories = Category.objects.all()
-        institutions = Institution.objects.all()
+        institutions = Institution.objects.all()  # na korelację z kategoriami
         context = {
             'categories': categories,
             'institutions': institutions,
-        }
+        }  # stworzyć skrypt w htmlu i odebrać w app.js, json, można w ajaxie i zrobić zapytanie do serwera
         return render(request, 'form.html', context)
+
+    def post(self, request):
+        new_donation = request.POST  # zmień na nazwy z htmla
+        institution = Institution.objects.get(id=new_donation['organization'])
+        donation = Donation.objects.create(quantity=new_donation['bags'],
+                                           institution=institution,
+                                           address=new_donation['address'],
+                                           city=new_donation['city'],
+                                           zip_code=new_donation['postcode'],
+                                           phone_number=new_donation['phone'],
+                                           pick_up_date=new_donation['date'],
+                                           pick_up_time=new_donation['time'],
+                                           pick_up_comment=new_donation['more_info'],
+                                           user=request.user)
+
+        for id in new_donation['categories']:
+            donation.categories.add(Category.objects.get(id=id))
+
+        donation.save()
+        print(donation)
+        return redirect(reverse('form-confirmation'))
 
 
 class Login(LoginView):
@@ -87,3 +110,9 @@ class Archive(View):
 
 class Settings(PasswordChangeView):
     success_url = reverse_lazy('profile')
+
+
+class FormConfirmation(View):
+
+    def get(self, request):
+        return render(request, 'form-confirmation.html')

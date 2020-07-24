@@ -57,13 +57,38 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     /**
-     * TODO: callback to page change event
+     * TODO: callback to page change event  //jquery z wykorzystaniem ajaxa, zapytania bez przeładowania strony, django rest framework
      */
+
+    // $('.help--slides-pagination').click(function(event) {
+    //   event.preventDefault();
+    //   var page_n = $(this).attr('href');
+    //   // ajax
+    //   $.ajax({
+    //     type: "GET",
+    //     url: "{% url 'index' %}", // name of url
+    //     data: {
+    //       page_n: page_n, //page_number
+    //       csrfmiddlewaretoken: '{{ csrf_token }}',
+    //     },
+    //
+    //
+    //   });
+    // });
     changePage(e) {
       e.preventDefault();
       const page = e.target.dataset.page;
 
       console.log(page);
+      $.ajax({
+        type: "GET",
+        // url: "{% url 'index' %}", // name of url
+        data: {
+          page_n: page, //page_number
+        },
+
+
+      });
     }
   }
   const helpSection = document.querySelector(".help");
@@ -234,7 +259,7 @@ document.addEventListener("DOMContentLoaded", function() {
       this.$stepInstructions[0].parentElement.parentElement.hidden = this.currentStep >= 6;
       this.$step.parentElement.hidden = this.currentStep >= 6;
 
-      // TODO: get data from inputs and show them in summary
+      // DONE: get data from inputs and show them in summary
       //  DATA - step 1 - categories
       let categories = document.querySelectorAll(".form-step-1");
       const categories_table = [];
@@ -311,6 +336,19 @@ document.addEventListener("DOMContentLoaded", function() {
       e.preventDefault();
       this.currentStep++;
       this.updateForm();
+
+      const token = document.getElementsByName("csrfmiddlewaretoken")[0];
+
+      $.ajax({
+            url : "/add-donation/",
+            type: "POST",
+            dataType: 'json',
+            data: $("form").serialize(),
+          success: function(){
+          console.log('ok');
+          window.location.assign("/form-confirmation/");
+        }
+      })
     }
   }
   const form = document.querySelector(".form--steps");
