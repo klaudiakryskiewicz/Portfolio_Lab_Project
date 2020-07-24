@@ -290,7 +290,29 @@ document.addEventListener("DOMContentLoaded", function() {
              organisation_name = el.parentElement.children[2].children[1].innerHTML;
         }
       }
-      console.log(organisation);
+
+      if (this.currentStep == 3) {
+        let inst_categories = document.querySelectorAll('#institution_categories');
+        inst_categories.forEach(inst => {
+          inst.parentElement.style.display = 'none';
+          let inst_cat_ids = [];
+          inst.value.toString().split(',').forEach(el => {
+            let cat_id = parseInt(el, 10);
+            inst_cat_ids.push(cat_id);
+
+          });
+          let includes = true;
+          categories_table.forEach(id => {
+            if (!inst_cat_ids.includes(id)) {
+              includes = false;
+            }
+          });
+          if (includes) {
+            inst.parentElement.style.display = 'block';
+          }
+        });
+      }
+
 
       //  DATA - step 4 - address
       const full_info ={}
@@ -342,11 +364,11 @@ document.addEventListener("DOMContentLoaded", function() {
       $.ajax({
             url : "/add-donation/",
             type: "POST",
-            dataType: 'json',
             data: $("form").serialize(),
-          success: function(){
-          console.log('ok');
-          window.location.assign("/form-confirmation/");
+            dataType: 'json',
+            success: function(){
+              console.log('ok');
+              window.location.assign("/form-confirmation/");
         }
       })
     }

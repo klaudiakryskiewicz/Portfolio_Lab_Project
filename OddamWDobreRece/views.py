@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.core.paginator import Paginator
 from django.db.models import Sum
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy, reverse
 
@@ -45,7 +45,7 @@ class AddDonation(LoginRequiredMixin, View):
 
     def get(self, request):
         categories = Category.objects.all()
-        institutions = Institution.objects.all()  # na korelację z kategoriami
+        institutions = Institution.objects.all()# na korelację z kategoriami
         context = {
             'categories': categories,
             'institutions': institutions,
@@ -53,24 +53,27 @@ class AddDonation(LoginRequiredMixin, View):
         return render(request, 'form.html', context)
 
     def post(self, request):
-        new_donation = request.POST  # zmień na nazwy z htmla
-        institution = Institution.objects.get(id=new_donation['organization'])
-        donation = Donation.objects.create(quantity=new_donation['bags'],
-                                           institution=institution,
-                                           address=new_donation['address'],
-                                           city=new_donation['city'],
-                                           zip_code=new_donation['postcode'],
-                                           phone_number=new_donation['phone'],
-                                           pick_up_date=new_donation['date'],
-                                           pick_up_time=new_donation['time'],
-                                           pick_up_comment=new_donation['more_info'],
-                                           user=request.user)
+        if request.is_ajax():
+            new_donation = request.POST
+            institution = Institution.objects.get(id=new_donation['organization'])
+            donation = Donation.objects.create(quantity=new_donation['bags'],
+                                               institution=institution,
+                                               address=new_donation['address'],
+                                               city=new_donation['city'],
+                                               zip_code=new_donation['postcode'],
+                                               phone_number=new_donation['phone'],
+                                               pick_up_date=new_donation['date'],
+                                               pick_up_time=new_donation['time'],
+                                               pick_up_comment=new_donation['more_info'],
+                                               user=request.user)
+            #zrobić formularzem dziedziczącym forms.Form
+            for cat_id in new_donation['categories']:
+                donation.categories.add(Category.objects.get(id=cat_id))
 
-        for id in new_donation['categories']:
-            donation.categories.add(Category.objects.get(id=id))
+            donation.save()
+            print(donation)
 
-        donation.save()
-        print(donation)
+            return JsonResponse({})
         return redirect(reverse('form-confirmation'))
 
 
